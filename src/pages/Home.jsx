@@ -86,11 +86,11 @@ function Home({ user, logout }) {
     total === 0 ? 0 : Math.round((completed / total) * 100);
 
   return (
-    <div className="container py-5 page-enter">
+      <div className="container py-5 page-enter">
         {/* Header */}
         <div className="d-flex justify-content-between align-items-center mb-4">
             <div>
-                <h1 className="fw-bold">Welcome back
+                <h1 className="fw-bold">Welcome <span class="d-none d-md-block">back &nbsp;</span> 
                     <span className="text-primary fw-bold">{user.user_metadata?.full_name || user.email}</span>
                 </h1> 
 
@@ -105,7 +105,7 @@ function Home({ user, logout }) {
             </div>
 
             <button className="btn glass-btn px-4" onClick={logout}>
-                Logout
+                <i class="fa-solid fa-right-from-bracket" style={{ fontSize: "32px" }}></i>
             </button>
             </div>
 
@@ -145,7 +145,7 @@ function Home({ user, logout }) {
             {/* Stats */}
             <div className="row g-3 mb-4">
 
-            <div className="col-md-4">
+            <div className="col-6 col-md-4">
                 <div className="glass p-3 h-100">
                 <div className="icon-box mb-3"><i className="fas fa-bullseye"></i></div>
                 <small>Total Habits</small>
@@ -153,7 +153,7 @@ function Home({ user, logout }) {
                 </div>
             </div>
 
-            <div className="col-md-4">
+            <div className="col-6 col-md-4">
                 <div className="glass p-3 h-100">
                 <div className="icon-box mb-3">  <i className="fas fa-circle-check"></i></div>
                 <small>Completed</small>
@@ -161,7 +161,7 @@ function Home({ user, logout }) {
                 </div>
             </div>
 
-            <div className="col-md-4">
+            <div className="col-12 col-md-4">
                 <div className="glass p-3 h-100">
                 <div className="icon-box mb-3"><i className="fas fa-fire"></i></div>
                 <small>Current Streak</small>
@@ -172,59 +172,66 @@ function Home({ user, logout }) {
             </div>
 
             {/* Navigation */}
-            <div className="row g-4">
+            <div className="row g-4 text-center text-md-start">
+              <div className="col-6 col-md-3">
+                <div className="feature-card tracker-card" onClick={() => setScreen("tracker")}>
+                  <div className="feature-icon">
+                    <i className="fas fa-list-check"></i>
+                  </div>
 
-            <div className="col-md-6">
-                <div
-                className="glass nav-card p-4 h-100"
-                onClick={() => setScreen("tracker")}
-                >
-                <div className="icon-box"><i class="fa-solid fa-person-running"></i></div>
-                <h4 className="mt-3">Daily Tracker</h4>
-                <p className="text-secondary mb-0">
-                    Complete today's habits
-                </p>
-                </div>
-            </div>
+                  <h4>Daily Tracker</h4>
+                  <p>Complete today's habits</p>
 
-            <div className="col-md-6">
-                <div
-                className="glass nav-card p-4 h-100"
-                onClick={() => setScreen("habits")}
-                >
-                <div className="icon-box"><i class="fa-solid fa-circle-check"></i></div>
-                <h4 className="mt-3">Habit Setup</h4>
-                <p className="text-secondary mb-0">
-                    Create & manage habits
-                </p>
+                  <span className="feature-arrow">
+                    <i className="fas fa-arrow-right"></i>
+                  </span>
                 </div>
-            </div>
+              </div>
 
-            <div className="col-md-6">
-                <div
-                className="glass nav-card p-4 h-100"
-                onClick={() => setScreen("schedule")}
-                >
-                <div className="icon-box"><i class="fa-solid fa-calendar-days"></i></div>
-                <h4 className="mt-3">Schedule</h4>
-                <p className="text-secondary mb-0">
-                    Plan your weekly routine
-                </p>
-                </div>
-            </div>
+              <div className="col-6 col-md-3">
+                <div className="feature-card habit-card" onClick={() => setScreen("habits")}>
+                  <div className="feature-icon">
+                    <i className="fas fa-seedling"></i>
+                  </div>
 
-            <div className="col-md-6">
-                <div
-                className="glass nav-card p-4 h-100"
-                onClick={() => setScreen("reports")}
-                >
-                <div className="icon-box"><i class="fa-solid fa-chart-simple"></i></div>
-                <h4 className="mt-3">Reports</h4>
-                <p className="text-secondary mb-0">
-                    View analytics & progress
-                </p>
+                  <h4>Habit Setup</h4>
+                  <p>Create & manage habits</p>
+
+                  <span className="feature-arrow">
+                    <i className="fas fa-arrow-right"></i>
+                  </span>
                 </div>
-            </div>
+              </div>
+
+              <div className="col-6 col-md-3">
+                <div className="feature-card schedule-card" onClick={() => setScreen("schedule")}>
+                  <div className="feature-icon">
+                    <i className="fas fa-calendar-days"></i>
+                  </div>
+
+                  <h4>Schedule</h4>
+                  <p>Plan your weekly routine</p>
+
+                  <span className="feature-arrow">
+                    <i className="fas fa-arrow-right"></i>
+                  </span>
+                </div>
+              </div>
+
+              <div className="col-6 col-md-3">
+                <div className="feature-card report-card" onClick={() => setScreen("reports")}>
+                  <div className="feature-icon">
+                    <i className="fas fa-chart-line"></i>
+                  </div>
+
+                  <h4>Reports</h4>
+                  <p>View analytics & progress</p>
+
+                  <span className="feature-arrow">
+                    <i className="fas fa-arrow-right"></i>
+                  </span>
+                </div>
+              </div>
 
             </div>
 

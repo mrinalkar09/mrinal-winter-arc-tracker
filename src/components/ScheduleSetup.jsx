@@ -21,6 +21,8 @@ export default function ScheduleSetup({ goBack }) {
   const [end, setEnd] = useState("");
 
   const [editingId, setEditingId] = useState(null);
+  const [showCopy, setShowCopy] = useState(false);
+  const [selectedDays, setSelectedDays] = useState([]);
 
   useEffect(() => {
     fetchSchedule();
@@ -141,6 +143,60 @@ export default function ScheduleSetup({ goBack }) {
     fetchSchedule();
   };
 
+
+  const copySchedule = async () => {
+    if (selectedDays.length === 0) {
+      alert("Select at least one day.");
+      return;
+    }
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    // Get current day's schedule
+    const { data: current } = await supabase
+      .from("schedules")
+      .select("*")
+      .eq("user_id", user.id)
+      .eq("day_of_week", activeDay);
+
+    if (!current?.length) {
+      alert("No activities to copy.");
+      return;
+    }
+
+    // Delete old schedules of selected days
+    await supabase
+      .from("schedules")
+      .delete()
+      .eq("user_id", user.id)
+      .in("day_of_week", selectedDays);
+
+    // Create new rows
+    const rows = [];
+
+    selectedDays.forEach((day) => {
+      current.forEach((task) => {
+        rows.push({
+          user_id: user.id,
+          day_of_week: day,
+          activity: task.activity,
+          start_time: task.start_time,
+          end_time: task.end_time,
+        });
+      });
+    });
+
+    await supabase.from("schedules").insert(rows);
+
+    alert("Schedule copied successfully!");
+    setShowCopy(false);
+    setSelectedDays([]);
+  };
+
+
+
   return (
     <div className="container py-5 page-enter">
 
@@ -255,7 +311,7 @@ export default function ScheduleSetup({ goBack }) {
       {/* Timeline */}
       <div className="glass p-4">
 
-        <div className="d-flex align-items-center mb-3">
+        <div className="d-flex justify-content-between align-items-center mb-3">
           <div className="icon-box me-3">🕒</div>
           <div>
             <h4 className="mb-0">{activeDay} Timeline</h4>
@@ -263,6 +319,14 @@ export default function ScheduleSetup({ goBack }) {
               {schedule.length} Activities
             </small>
           </div>
+
+          <button
+            className="btn glass-btn px-1 px-md-3"
+            onClick={() => setShowCopy(true)}
+          >
+            <i className="fas fa-copy me-2"></i>
+            Copy
+          </button>
         </div>
 
         {schedule.length===0 ? (
@@ -318,6 +382,67 @@ export default function ScheduleSetup({ goBack }) {
         )}
 
       </div>
+
+      {/* ===== Copy Schedule Modal ===== */}
+      {showCopy && (
+        <div className="copy-overlay">
+          <div className="copy-modal glass p-4">
+            <h4 className="fw-bold mb-2" style={{ color: "white" }}>
+              Copy {activeDay} Schedule
+            </h4>
+
+            <p className=" mb-3" style={{ color: "white" }}>
+              Select the days that should receive the same timetable.
+            </p>
+
+            <div className="row g-2 mb-4">
+              {days
+                .filter((d) => d !== activeDay)
+                .map((day) => (
+                  <div className="col-6" key={day}>
+                    <label className="day-checkbox">
+                      <input
+                        type="checkbox"
+                        checked={selectedDays.includes(day)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setSelectedDays([...selectedDays, day]);
+                          } else {
+                            setSelectedDays(
+                              selectedDays.filter((d) => d !== day)
+                            );
+                          }
+                        }}
+                      />
+                      <span>{day}</span>
+                    </label>
+                  </div>
+                ))}
+            </div>
+
+            <div className="d-flex gap-2">
+              <button
+                className="btn btn-primary flex-fill"
+                onClick={copySchedule}
+              >
+                <i className="fas fa-copy me-2"></i>
+                Copy
+              </button>
+
+              <button
+                className="btn glass-btn flex-fill"
+                onClick={() => {
+                  setShowCopy(false);
+                  setSelectedDays([]);
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
 
     </div>
   );
