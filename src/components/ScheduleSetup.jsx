@@ -12,7 +12,7 @@ const days = [
   "Sunday",
 ];
 
-export default function ScheduleSetup({ goBack }) {
+export default function ScheduleSetup({ goBack, showToast }) {
   const [activeDay, setActiveDay] = useState("Monday");
   const [schedule, setSchedule] = useState([]);
   const sortedSchedule = [...schedule].sort((a, b) =>
@@ -58,7 +58,10 @@ export default function ScheduleSetup({ goBack }) {
   // Add activity
   const addTask = async () => {
     if (!activity || !start || !end) {
-      alert("Please fill all fields.");
+      showToast({
+        type: "error",
+        text: "Please fill all fields.",
+      });
       return;
     }
 
@@ -80,7 +83,10 @@ export default function ScheduleSetup({ goBack }) {
         .eq("id", editingId);
 
       if (error) {
-        alert(error.message);
+        showToast({
+          type: "error",
+          text: error.message,
+        });
         return;
       }
 
@@ -100,7 +106,10 @@ export default function ScheduleSetup({ goBack }) {
       ]);
 
       if (error) {
-        alert(error.message);
+        showToast({
+          type: "error",
+          text: error.message,
+        });
         return;
       }
     }
@@ -112,6 +121,13 @@ export default function ScheduleSetup({ goBack }) {
     setEditingId(null);
 
     fetchSchedule();
+
+    showToast({
+      type: "success",
+      text: editingId
+        ? "Activity updated successfully!"
+        : "Activity created successfully!",
+    });
   }; 
 
 
@@ -126,16 +142,7 @@ export default function ScheduleSetup({ goBack }) {
 
   // Delete activity
   const deleteTask = async (id) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this activity?"
-    );
-
-    if (!confirmDelete) return;
-
-    await supabase
-      .from("schedules")
-      .delete()
-      .eq("id", id);
+    await supabase.from("schedules").delete().eq("id", id);
 
     if (editingId === id) {
       setEditingId(null);
@@ -145,12 +152,20 @@ export default function ScheduleSetup({ goBack }) {
     }
 
     fetchSchedule();
+
+    showToast({
+      type: "success",
+      text: "Activity deleted successfully.",
+    });
   };
 
 
   const copySchedule = async () => {
     if (selectedDays.length === 0) {
-      alert("Select at least one day.");
+      showToast({
+        type: "warning",
+        text: "Select at least one day.",
+      });
       return;
     }
 
@@ -166,7 +181,10 @@ export default function ScheduleSetup({ goBack }) {
       .eq("day_of_week", activeDay);
 
     if (!current?.length) {
-      alert("No activities to copy.");
+      showToast({
+        type: "warning",
+        text: "No activities to copy.",
+      });
       return;
     }
 
@@ -194,7 +212,11 @@ export default function ScheduleSetup({ goBack }) {
 
     await supabase.from("schedules").insert(rows);
 
-    alert("Schedule copied successfully!");
+    showToast({
+      type: "success",
+      text: "Schedule copied successfully!",
+    });
+
     setShowCopy(false);
     setSelectedDays([]);
   };
@@ -293,10 +315,7 @@ export default function ScheduleSetup({ goBack }) {
 
         </div>
 
-        <button
-          className="btn btn-dark mt-4"
-          onClick={addTask}
-        >
+        <button className="btn btn-primary w-100 py-3 rounded-4 fw-semibold mt-4" onClick={addTask} >
           <>
             <i
               className={`fas ${
@@ -310,7 +329,7 @@ export default function ScheduleSetup({ goBack }) {
 
         {editingId && (
           <button
-            className="btn glass mt-2 ms-2 px-4"
+            className="btn glass w-100 mt-2 py-3 rounded-4"
             onClick={() => {
               setEditingId(null);
               setActivity("");

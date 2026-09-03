@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 
-export default function DailyTracker({ goBack, refreshDashboard }) {
+export default function DailyTracker({ goBack, refreshDashboard, showToast, }) {
   const [habits, setHabits] = useState([]);
   const [schedule, setSchedule] = useState([]);
 
@@ -149,9 +149,14 @@ export default function DailyTracker({ goBack, refreshDashboard }) {
             });
 
         if (habitError) {
-            console.log(habitError);
-            alert(habitError.message);
-            return;
+          console.log(habitError);
+
+          showToast({
+            type: "error",
+            text: habitError.message,
+          });
+
+          return;
         }
 
         // SCHEDULES
@@ -169,14 +174,19 @@ export default function DailyTracker({ goBack, refreshDashboard }) {
             });
 
         if (scheduleError) {
-            console.log(scheduleError);
-            alert(scheduleError.message);
-            return;
+          console.log(scheduleError);
+          showToast({
+            type: "error",
+            text: scheduleError.message,
+          });
+          return;
         }
 
         if (refreshDashboard) refreshDashboard();
-
-        alert("Today's progress saved!");
+        showToast({
+          type: "success",
+          text: "Today's progress saved successfully!",
+        });
     }; 
 
 

@@ -179,25 +179,39 @@ export default function Reports({ goBack }) {
                 .eq("user_id", user.id)
                 .eq("log_date", selectedDate);
 
+                
                 const sortedSchedules = (schedules || []).sort((a, b) =>
-                (a.schedules?.start_time || "").localeCompare(
-                    b.schedules?.start_time || ""
-                )
+                    (a.schedules?.start_time || "").localeCompare(
+                        b.schedules?.start_time || ""
+                    )
                 );
 
-            setScheduleHistory(sortedSchedules);
+                setScheduleHistory(sortedSchedules);
 
+                // Schedule statistics
+                const scheduleCompleted =
+                    sortedSchedules.filter((s) => s.completed).length;
 
-            const completed =
-                data?.filter((h) => h.completed).length || 0;
+                const scheduleTotal = sortedSchedules.length;
 
-            const total = data?.length || 0;
+                setCompletedSchedules(scheduleCompleted);
+                setTotalSchedules(scheduleTotal);
+                setSchedulePercent(
+                    scheduleTotal === 0
+                        ? 0
+                        : Math.round((scheduleCompleted / scheduleTotal) * 100)
+                    );
 
-            setHistoryPercent(
-                total === 0 ? 0 : Math.round((completed / total) * 100)
-            );
+                // Habit statistics
+                const completed =
+                    data?.filter((h) => h.completed).length || 0;
 
-            setHistory(data || []);
+                const total = data?.length || 0;
+                setHistoryPercent(
+                    total === 0 ? 0 : Math.round((completed / total) * 100)
+                );
+
+                setHistory(data || []);
         }
 
 

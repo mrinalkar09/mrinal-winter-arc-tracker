@@ -586,6 +586,80 @@ h1,h2,h3,h4,h5{
 }
 
 
+/* ===== Glass Toast ===== */
+
+.toast-glass{
+  position:fixed;
+  top:22px;
+  right:22px;
+  z-index:9999;
+
+  width:320px;
+  padding:16px;
+  border-radius:22px;
+
+  background:rgba(255,255,255,.35);
+  backdrop-filter:blur(22px);
+  border:1px solid rgba(255,255,255,.45);
+
+  box-shadow:0 20px 45px rgba(61,97,255,.18);
+
+  animation:toastIn .35s ease;
+  overflow:hidden;
+}
+
+.toast-icon{
+  font-size:24px;
+}
+
+.toast-close{
+  background:none;
+  border:none;
+  color:#64748B;
+  cursor:pointer;
+}
+
+.toast-glass h6{
+  margin:0;
+  font-weight:700;
+}
+
+.toast-glass small{
+  color:#475569;
+}
+
+.toast-success .toast-icon{ color:#16A34A; }
+.toast-error .toast-icon{ color:#DC2626; }
+.toast-warning .toast-icon{ color:#D97706; }
+.toast-info .toast-icon{ color:#2563EB; }
+
+.toast-progress{
+  position:absolute;
+  left:0;
+  bottom:0;
+  height:4px;
+  width:100%;
+  background:linear-gradient(90deg,#5EE6FF,#4F7CFF);
+  animation:toastBar 3s linear forwards;
+}
+
+@keyframes toastIn{
+  from{
+    opacity:0;
+    transform:translateX(40px);
+  }
+  to{
+    opacity:1;
+    transform:translateX(0);
+  }
+}
+
+@keyframes toastBar{
+  from{ width:100%; }
+  to{ width:0%; }
+}
+
+
 
 /* ========================================
    MOBILE RESPONSIVE (≤768px)

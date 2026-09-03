@@ -5,7 +5,7 @@ import HabitSetup from "../components/HabitSetup";
 import DailyTracker from "../components/DailyTracker";
 import Reports from "../components/Reports";
 
-function Home({ user, logout }) {
+function Home({ user, logout, showToast }) {
   const [screen, setScreen] = useState("dashboard");
   const [completed, setCompleted] = useState(0);
   const [total, setTotal] = useState(0);
@@ -60,11 +60,21 @@ function Home({ user, logout }) {
   };
 
   if (screen === "schedule") {
-    return <ScheduleSetup goBack={() => setScreen("dashboard")} />;
+    return (
+      <ScheduleSetup
+        goBack={() => setScreen("dashboard")}
+        showToast={showToast}
+      />
+    );
   }
 
   if (screen === "habits") {
-    return <HabitSetup goBack={() => setScreen("dashboard")} />;
+    return (
+      <HabitSetup
+        goBack={() => setScreen("dashboard")}
+        showToast={showToast}
+      />
+    );
   }
 
   if (screen === "tracker") {
@@ -74,6 +84,8 @@ function Home({ user, logout }) {
           loadDashboard();
           setScreen("dashboard");
         }}
+        refreshDashboard={loadDashboard}
+        showToast={showToast}
       />
     );
   }

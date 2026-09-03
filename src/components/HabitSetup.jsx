@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabase";
 
-export default function HabitSetup({ goBack }) {
+export default function HabitSetup({ goBack, showToast }) {
   const [habitName, setHabitName] = useState("");
   const [category, setCategory] = useState("Health");
   const [habitType, setHabitType] = useState("daily");
@@ -30,8 +30,12 @@ export default function HabitSetup({ goBack }) {
   };
 
   const createHabit = async () => {
+    const isEditing = editingId !== null;
     if (!habitName.trim()) {
-      alert("Please enter a habit name.");
+      showToast({
+        type: "error",
+        text: "Please enter a habit name.",
+      });
       return;
     }
 
@@ -53,7 +57,10 @@ export default function HabitSetup({ goBack }) {
         .eq("id", editingId);
 
       if (error) {
-        alert(error.message);
+        showToast({
+          type: "error",
+          text: error.message,
+        });
         return;
       }
 
@@ -70,7 +77,10 @@ export default function HabitSetup({ goBack }) {
         .maybeSingle();
 
       if (existing) {
-        alert("Habit already exists!");
+        showToast({
+          type: "error",
+          text: "Habit already exists!",
+        });
         return;
       }
 
@@ -86,7 +96,10 @@ export default function HabitSetup({ goBack }) {
         ]);
 
       if (error) {
-        alert(error.message);
+        showToast({
+          type: "error",
+          text: error.message,
+        });
         return;
       }
     }
@@ -97,7 +110,14 @@ export default function HabitSetup({ goBack }) {
     setHabitType("daily");
     setEditingId(null);
 
-    fetchHabits();
+    await fetchHabits();
+
+    showToast({
+      type: "success",
+      text: isEditing
+        ? "Habit updated successfully!"
+        : "Habit created successfully!",
+    });
   };
 
   const editHabit = (habit) => {
