@@ -542,6 +542,29 @@ h1,h2,h3,h4,h5{
   height:24px;
   cursor:pointer;
 }
+.current-task{
+  background: linear-gradient(
+    135deg,
+    rgba(79,124,255,.18),
+    rgba(91,93,255,.08)
+  ) !important;
+
+  border:1px solid rgba(79,124,255,.45);
+  box-shadow:0 10px 30px rgba(79,124,255,.18);
+  transform:scale(1.01);
+  transition:.3s ease;
+}
+
+.live-badge{
+  background:#2563EB;
+  color:white;
+  font-size:.65rem;
+  font-weight:700;
+  padding:4px 8px;
+  border-radius:999px;
+  letter-spacing:.5px;
+}
+
 
 
 /* ========================================

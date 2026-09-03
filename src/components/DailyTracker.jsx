@@ -8,10 +8,32 @@ export default function DailyTracker({ goBack, refreshDashboard }) {
   const [activeView, setActiveView] = useState("habits");
   const [scheduleLogs, setScheduleLogs] = useState({});
 
+  const [currentTime, setCurrentTime] = useState("");
+  const [currentActivityId, setCurrentActivityId] = useState(null);
+
   useEffect(() => {
     fetchHabits();
     fetchSchedule();
   }, []);
+
+  useEffect(() => {
+  const updateClock = () => {
+    const now = new Date();
+
+    const time =
+      String(now.getHours()).padStart(2, "0") +
+      ":" +
+      String(now.getMinutes()).padStart(2, "0");
+
+    setCurrentTime(time);
+  };
+
+  updateClock();
+
+  const interval = setInterval(updateClock, 60000);
+
+  return () => clearInterval(interval);
+}, []);
 
   // ---------- HABITS ----------
   const fetchHabits = async () => {
@@ -91,6 +113,17 @@ export default function DailyTracker({ goBack, refreshDashboard }) {
     ...task,
     completed: scheduleLogs[task.id] || false,
   }));
+
+  useEffect(() => {
+    const activeTask = timeline.find((task) => {
+      return (
+        currentTime >= task.start_time &&
+        currentTime < task.end_time
+      );
+    });
+
+    setCurrentActivityId(activeTask?.id || null);
+  }, [timeline, currentTime]);
 
     // ---------- SAVE BOTH ----------
     const saveProgress = async () => {
@@ -246,10 +279,18 @@ export default function DailyTracker({ goBack, refreshDashboard }) {
             timeline.map((task) => (
               <div
                 key={task.id}
-                className="timeline-card mb-3 d-flex justify-content-between align-items-center"
+                className={`timeline-card mb-3 d-flex justify-content-between align-items-center ${
+                  currentActivityId === task.id ? "current-task" : ""
+                }`}
               >
                 <div>
-                  <h5 className="mb-1">{task.activity}</h5>
+                  <div className="d-flex align-items-center gap-2">
+                    <h5 className="mb-1">{task.activity}</h5>
+
+                    {currentActivityId === task.id && (
+                      <span className="live-badge">LIVE NOW</span>
+                    )}
+                  </div>
 
                   <small className="text-secondary">
                     {task.start_time?.slice(0, 5)} -{" "}
