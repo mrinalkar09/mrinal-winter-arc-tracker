@@ -85,7 +85,9 @@ export default function DailyTracker({ goBack, refreshDashboard }) {
     setScheduleLogs(map);
   };
 
-  const timeline = schedule.map((task) => ({
+  const timeline = [...schedule]
+  .sort((a, b) => a.start_time.localeCompare(b.start_time))
+  .map((task) => ({
     ...task,
     completed: scheduleLogs[task.id] || false,
   }));

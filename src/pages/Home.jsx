@@ -145,29 +145,29 @@ function Home({ user, logout }) {
             {/* Stats */}
             <div className="row g-3 mb-4">
 
-            <div className="col-6 col-md-4">
-                <div className="glass p-3 h-100">
-                <div className="icon-box mb-3"><i className="fas fa-bullseye"></i></div>
-                <small>Total Habits</small>
-                <h2>{total}</h2>
-                </div>
-            </div>
+              <div className="col-6 col-md-4">
+                  <div className="glass p-3 h-100">
+                  <div className="icon-box mb-3"><i className="fas fa-bullseye"></i></div>
+                  <small>Total Habits</small>
+                  <h2>{total}</h2>
+                  </div>
+              </div>
 
-            <div className="col-6 col-md-4">
-                <div className="glass p-3 h-100">
-                <div className="icon-box mb-3">  <i className="fas fa-circle-check"></i></div>
-                <small>Completed</small>
-                <h2>{completed}</h2>
-                </div>
-            </div>
+              <div className="col-6 col-md-4">
+                  <div className="glass p-3 h-100">
+                  <div className="icon-box mb-3">  <i className="fas fa-circle-check"></i></div>
+                  <small>Completed</small>
+                  <h2>{completed}</h2>
+                  </div>
+              </div>
 
-            <div className="col-12 col-md-4">
-                <div className="glass p-3 h-100">
-                <div className="icon-box mb-3"><i className="fas fa-fire"></i></div>
-                <small>Current Streak</small>
-                <h2>{streak}</h2>
-                </div>
-            </div>
+              <div className="col-12 col-md-4">
+                  <div className="glass p-3 h-100">
+                  <div className="icon-box mb-3"><i className="fas fa-fire"></i></div>
+                  <small>Current Streak</small>
+                  <h2>{streak}</h2>
+                  </div>
+              </div>
 
             </div>
 

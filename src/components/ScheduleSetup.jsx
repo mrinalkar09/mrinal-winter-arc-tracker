@@ -15,6 +15,10 @@ const days = [
 export default function ScheduleSetup({ goBack }) {
   const [activeDay, setActiveDay] = useState("Monday");
   const [schedule, setSchedule] = useState([]);
+  const sortedSchedule = [...schedule].sort((a, b) =>
+    a.start_time.localeCompare(b.start_time)
+  );
+
 
   const [activity, setActivity] = useState("");
   const [start, setStart] = useState("");
@@ -316,7 +320,7 @@ export default function ScheduleSetup({ goBack }) {
           <div>
             <h4 className="mb-0">{activeDay} Timeline</h4>
             <small className="text-secondary">
-              {schedule.length} Activities
+              {sortedSchedule.length} Activities
             </small>
           </div>
 
@@ -329,7 +333,7 @@ export default function ScheduleSetup({ goBack }) {
           </button>
         </div>
 
-        {schedule.length===0 ? (
+        {sortedSchedule.length === 0 ? (
           <div className="text-center py-5">
             <div style={{fontSize:"52px"}}>🌤️</div>
             <h5 className="mt-3">No Activities Yet</h5>
@@ -338,7 +342,7 @@ export default function ScheduleSetup({ goBack }) {
             </p>
           </div>
         ):(
-          schedule.map((item)=>(
+          sortedSchedule.map((item) => (
             <div key={item.id} className="timeline-card mb-3">
 
               <div className="timeline-time">
