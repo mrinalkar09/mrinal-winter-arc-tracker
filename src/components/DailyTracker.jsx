@@ -183,7 +183,7 @@ export default function DailyTracker({ goBack, refreshDashboard }) {
               activeView === "habits" ? "btn-primary" : "btn-light"
             }`}
             onClick={() => setActiveView("habits")} >
-              <i className="fas fa-seedling me-2"></i> Today's Habits
+              <i class="fa-solid fa-person-walking me-2"></i> Today's Habits
           </button>
 
           <button
@@ -200,7 +200,7 @@ export default function DailyTracker({ goBack, refreshDashboard }) {
       {/* HABITS */}
       {activeView === "habits" && (
         <div className="glass p-4 mb-4">
-          <h4 className="mb-3"><i className="fas fa-seedling text-success me-2"></i>Today's Habits</h4>
+          <h4 className="mb-3"><i class="fa-solid fa-person-walking me-2"></i> Today's Habits</h4>
 
           {habits.length === 0 ? (
             <p className="text-secondary"><i className="far fa-face-smile me-2"></i> No habits created yet.</p>

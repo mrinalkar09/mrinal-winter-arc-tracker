@@ -131,7 +131,7 @@ export default function HabitSetup({ goBack }) {
       {/* Header */}
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div>
-          <h2 className="fw-bold mb-1">✨ Habit Setup</h2>
+          <h2 className="fw-bold mb-1"><i className="fas fa-seedling me-2 text-success"></i>Habit Setup</h2>
           <p className="text-secondary mb-0">
             Build your daily & weekly routine
           </p>
@@ -149,7 +149,7 @@ export default function HabitSetup({ goBack }) {
             fontWeight: 600,
           }}
         >
-          ← Dashboard
+          <i class="fa-solid fa-right-from-bracket" style={{ fontSize: "32px" }}></i>
         </button>
       </div>
 
