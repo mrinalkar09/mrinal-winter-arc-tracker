@@ -149,7 +149,7 @@ export default function HabitSetup({ goBack }) {
             fontWeight: 600,
           }}
         >
-          <i class="fa-solid fa-right-from-bracket" style={{ fontSize: "32px" }}></i>
+          <i className="fas fa-arrow-left me-2"></i>Dashboard
         </button>
       </div>
 
@@ -157,7 +157,11 @@ export default function HabitSetup({ goBack }) {
       <div className="glass p-4 mb-4">
         <div className="d-flex align-items-center mb-3">
           <div className="icon-box me-3">
-            {editingId ? "✏️" : "➕"}
+            <i
+              className={`fas ${
+                editingId ? "fa-pen-to-square" : "fa-plus"
+              }`}
+            ></i>
           </div>
           <div>
             <h4 className="mb-0">
@@ -214,7 +218,14 @@ export default function HabitSetup({ goBack }) {
            className="btn btn-primary w-100 py-3 rounded-4 fw-semibold"
            onClick={createHabit}
          >
-           {editingId ? "💾 Update Habit" : "+ Create Habit"}
+          <>
+            <i
+              className={`fas ${
+                editingId ? "fa-floppy-disk" : "fa-plus"
+              } me-2`}
+            ></i>
+            {editingId ? "Update Habit" : "Create Habit"}
+          </>
          </button>
          {editingId && (
            <button
@@ -226,6 +237,7 @@ export default function HabitSetup({ goBack }) {
                setHabitType("daily");
              }}
            >
+            <i className="fas fa-xmark me-2"></i>
              Cancel Editing
            </button>
          )}
@@ -245,18 +257,31 @@ export default function HabitSetup({ goBack }) {
             className="glass px-3 py-2"
             style={{ borderRadius: "16px", fontWeight: 600 }}
           >
-            🎯 {habits.length}
+            <i className="fas fa-bullseye me-2 text-primary"></i>{habits.length}
           </div>
         </div>
 
         {habits.length === 0 ? (
           <div className="text-center py-5">
-            <div style={{ fontSize: "50px" }}>📋</div>
+            <div
+              className="mx-auto d-flex align-items-center justify-content-center rounded-circle"
+              style={{
+                width: 80,
+                height: 80,
+                background: "rgba(79,124,255,.1)",
+                color: "#4F7CFF",
+                fontSize: 30,
+              }}
+            >
+              <i className="fas fa-clipboard-list"></i>
+            </div>
+
             <h5 className="mt-3">No habits yet</h5>
-            <p className="text-secondary">
+
+            <p className="text-secondary mb-0">
               Create your first habit above.
             </p>
-          </div>
+        </div>
         ) : (
           <div className="row g-3">
             {habits.map((habit) => (
@@ -285,7 +310,7 @@ export default function HabitSetup({ goBack }) {
                         height: 38,
                       }}
                     >
-                      ✏️
+                      <i className="fas fa-pen"></i>
                     </button>
 
                     <button
@@ -296,7 +321,7 @@ export default function HabitSetup({ goBack }) {
                         height: 38,
                       }}
                     >
-                      🗑
+                      <i className="fas fa-trash"></i>🗑
                     </button>
 
                   </div>

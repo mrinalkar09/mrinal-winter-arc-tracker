@@ -207,14 +207,14 @@ export default function ScheduleSetup({ goBack }) {
       {/* Header */}
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div>
-          <h2 className="fw-bold mb-1">📅 Weekly Schedule</h2>
+          <h2 className="fw-bold mb-1"><i className="fas fa-calendar-week me-2 text-primary"></i>Weekly Schedule</h2>
           <p className="text-secondary mb-0">
             Design your perfect weekly routine
           </p>
         </div>
 
         <button className="btn glass-btn px-4" onClick={goBack}>
-          ← Dashboard
+          <i className="fas fa-arrow-left me-2"></i> Dashboard
         </button>
       </div>
 
@@ -239,7 +239,11 @@ export default function ScheduleSetup({ goBack }) {
       <div className="glass p-4 mb-4">
         <div className="d-flex align-items-center mb-3">
           <div className="icon-box me-3">
-            {editingId ? "✏️" : "➕"}
+            <i
+              className={`fas ${
+                editingId ? "fa-pen-to-square" : "fa-plus"
+              }`}
+            ></i>
           </div>
           <div>
             <h4 className="mb-0">
@@ -293,7 +297,14 @@ export default function ScheduleSetup({ goBack }) {
           className="btn btn-dark mt-4"
           onClick={addTask}
         >
-          {editingId ? "💾 Update Activity" : "+ Add Activity"}
+          <>
+            <i
+              className={`fas ${
+                editingId ? "fa-floppy-disk" : "fa-plus"
+              } me-2`}
+            ></i>
+            {editingId ? "Update Activity" : "Add Activity"}
+          </>
         </button>
 
 
@@ -307,7 +318,7 @@ export default function ScheduleSetup({ goBack }) {
               setEnd("");
             }}
           >
-            Cancel
+            <i className="fas fa-xmark me-2"></i>
           </button>
         )}
       </div>
@@ -316,7 +327,7 @@ export default function ScheduleSetup({ goBack }) {
       <div className="glass p-4">
 
         <div className="d-flex justify-content-between align-items-center mb-3">
-          <div className="icon-box me-3">🕒</div>
+          <div className="icon-box me-3"><i className="fas fa-clock"></i></div>
           <div>
             <h4 className="mb-0">{activeDay} Timeline</h4>
             <small className="text-secondary">
@@ -335,8 +346,21 @@ export default function ScheduleSetup({ goBack }) {
 
         {sortedSchedule.length === 0 ? (
           <div className="text-center py-5">
-            <div style={{fontSize:"52px"}}>🌤️</div>
+            <div
+              className="mx-auto d-flex align-items-center justify-content-center rounded-circle"
+              style={{
+                width: 84,
+                height: 84,
+                background: "rgba(79,124,255,.1)",
+                color: "#4F7CFF",
+                fontSize: 30,
+              }}
+            >
+              <i className="fas fa-calendar-plus"></i>
+            </div>
+
             <h5 className="mt-3">No Activities Yet</h5>
+
             <p className="text-secondary mb-0">
               Build your routine for {activeDay}
             </p>
@@ -365,7 +389,7 @@ export default function ScheduleSetup({ goBack }) {
                     height: 38,
                   }}
                 >
-                  ✏️
+                  <i className="fas fa-pen"></i>
                 </button>
 
                 <button
@@ -376,7 +400,7 @@ export default function ScheduleSetup({ goBack }) {
                     height: 38,
                   }}
                 >
-                  🗑
+                  <i className="fas fa-trash"></i>
                 </button>
 
               </div>
@@ -391,7 +415,8 @@ export default function ScheduleSetup({ goBack }) {
       {showCopy && (
         <div className="copy-overlay">
           <div className="copy-modal glass p-4">
-            <h4 className="fw-bold mb-2" style={{ color: "white" }}>
+            <h4 className="fw-bold mb-2 text-white">
+              <i className="fas fa-copy me-2"></i>
               Copy {activeDay} Schedule
             </h4>
 
@@ -440,7 +465,7 @@ export default function ScheduleSetup({ goBack }) {
                   setSelectedDays([]);
                 }}
               >
-                Cancel
+                <i className="fas fa-xmark me-2"></i>Cancel
               </button>
             </div>
           </div>

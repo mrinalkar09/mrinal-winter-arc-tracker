@@ -302,14 +302,14 @@ export default function Reports({ goBack }) {
         {/* Header */}
         <div className="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h2 className="fw-bold mb-1">📈 Reports & Analytics</h2>
+            <h2 className="fw-bold mb-1"><i className="fas fa-chart-line me-2 text-primary"></i> Reports & Analytics</h2>
             <p className="text-secondary mb-0">
             Track consistency, history & monthly progress
             </p>
         </div>
 
         <button className="btn glass px-4" onClick={goBack}>
-            ← Dashboard
+            <i className="fas fa-arrow-left me-2"></i>Dashboard
         </button>
         </div>
 
@@ -362,7 +362,7 @@ export default function Reports({ goBack }) {
 
         <div className="col-md-4">
             <div className="glass p-4 h-100">
-            <div className="icon-box mb-3">🎯</div>
+            <div className="icon-box mb-3"><i className="fas fa-bullseye" style={{ color: "white" }}></i></div>
             <small>Total Habits</small>
             <h2>{totalHabits}</h2>
             </div>
@@ -370,7 +370,7 @@ export default function Reports({ goBack }) {
 
         <div className="col-md-4">
             <div className="glass p-4 h-100">
-            <div className="icon-box mb-3">✅</div>
+            <div className="icon-box mb-3"><i className="fas fa-circle-check" style={{ color: "white" }}></i></div>
             <small>Selected Day</small>
             <h2>{completedToday}%</h2>
             </div>
@@ -378,7 +378,7 @@ export default function Reports({ goBack }) {
 
         <div className="col-md-4">
             <div className="glass p-4 h-100">
-            <div className="icon-box mb-3">🔥</div>
+            <div className="icon-box mb-3"><i className="fas fa-fire" style={{ color: "white" }}></i></div>
             <small>Current Streak</small>
             <h2>{streak}</h2>
             </div>
@@ -399,7 +399,7 @@ export default function Reports({ goBack }) {
             }
             onClick={()=>setCurrentMonth(new Date(year,month-1,1))}
             >
-            ←
+            <i className="fas fa-chevron-left"></i>
             </button>
 
             <h4 className="fw-bold mb-0">{monthName}</h4>
@@ -412,7 +412,7 @@ export default function Reports({ goBack }) {
             }
             onClick={()=>setCurrentMonth(new Date(year,month+1,1))}
             >
-            →
+            <i className="fas fa-chevron-right"></i>
             </button>
 
         </div>
@@ -572,7 +572,7 @@ export default function Reports({ goBack }) {
 
             {history.length===0 ?(
                 <div className="text-center py-4">
-                <div style={{fontSize:"46px"}}>📭</div>
+                <div style={{fontSize:"46px"}}><i className="fas fa-box-open"></i></div>
                 <p className="text-secondary mb-0 mt-2">
                     No records for this day
                 </p>
@@ -585,7 +585,14 @@ export default function Reports({ goBack }) {
                 >
 
                     <div className="icon-box">
-                    {item.completed ? "✅" : "⭕"}
+                        <i
+                            className={`fas ${
+                            item.completed ? "fa-circle-check" : "fa-circle"
+                            }`}
+                            style={{
+                            color: item.completed ? "#22C55E" : "#CBD5E1",
+                            }}
+                        ></i>
                     </div>
 
                     <div className="flex-grow-1">
@@ -616,7 +623,9 @@ export default function Reports({ goBack }) {
 
                     {scheduleHistory.length === 0 ? (
                     <div className="text-center py-4">
-                        <div style={{ fontSize: "42px" }}>📅</div>
+                        <div style={{ fontSize: "42px", color: "#5B5DFF" }}>
+                            <i className="fas fa-calendar-xmark"></i>
+                        </div>
                         <p className="text-secondary mt-2 mb-0">
                         No schedule records for this day
                         </p>
@@ -639,7 +648,14 @@ export default function Reports({ goBack }) {
                             </div>
 
                             <div style={{ fontSize: "24px" }}>
-                                {item.completed ? "✅" : "⭕"}
+                                <i
+                                    className={`fas ${
+                                    item.completed ? "fa-circle-check" : "fa-circle"
+                                    }`}
+                                    style={{
+                                    color: item.completed ? "#22C55E" : "#CBD5E1",
+                                    }}
+                                ></i>
                             </div>
                         </div>
                     ))  
