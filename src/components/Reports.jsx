@@ -179,21 +179,13 @@ export default function Reports({ goBack }) {
                 .eq("user_id", user.id)
                 .eq("log_date", selectedDate);
 
-                setScheduleHistory(schedules || []);
+                const sortedSchedules = (schedules || []).sort((a, b) =>
+                (a.schedules?.start_time || "").localeCompare(
+                    b.schedules?.start_time || ""
+                )
+                );
 
-                const scheduleCompleted =
-                schedules?.filter((s) => s.completed).length || 0;
-
-                const scheduleTotal = schedules?.length || 0;
-
-                setCompletedSchedules(scheduleCompleted);
-                setTotalSchedules(scheduleTotal);
-
-                setSchedulePercent(
-                scheduleTotal === 0
-                    ? 0
-                    : Math.round((scheduleCompleted / scheduleTotal) * 100)
-            );
+            setScheduleHistory(sortedSchedules);
 
 
             const completed =
