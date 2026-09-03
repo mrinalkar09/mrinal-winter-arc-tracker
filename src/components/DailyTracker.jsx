@@ -161,7 +161,7 @@ export default function DailyTracker({ goBack, refreshDashboard }) {
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div>
           <h2 className="fw-bold mb-1">
-            <i className="fas fa-chart-line me-2 text-primary"></i>
+            <i className="fas fa-list-check me-2 text-primary"></i>
             Daily Tracker
           </h2>
           <p className="text-secondary mb-0">
@@ -182,9 +182,8 @@ export default function DailyTracker({ goBack, refreshDashboard }) {
             className={`btn flex-fill ${
               activeView === "habits" ? "btn-primary" : "btn-light"
             }`}
-            onClick={() => setActiveView("habits")}
-          >
-            ✅ Today's Habits
+            onClick={() => setActiveView("habits")} >
+              <i className="fas fa-seedling me-2"></i> Today's Habits
           </button>
 
           <button
@@ -193,7 +192,7 @@ export default function DailyTracker({ goBack, refreshDashboard }) {
             }`}
             onClick={() => setActiveView("schedule")}
           >
-            📅 Today's Schedule
+           <i className="fas fa-calendar-day me-2"></i> Today's Schedule
           </button>
         </div>
       </div>
@@ -201,10 +200,10 @@ export default function DailyTracker({ goBack, refreshDashboard }) {
       {/* HABITS */}
       {activeView === "habits" && (
         <div className="glass p-4 mb-4">
-          <h4 className="mb-3">Today's Habits</h4>
+          <h4 className="mb-3"><i className="fas fa-seedling text-success me-2"></i>Today's Habits</h4>
 
           {habits.length === 0 ? (
-            <p className="text-secondary">No habits created yet.</p>
+            <p className="text-secondary"><i className="far fa-face-smile me-2"></i> No habits created yet.</p>
           ) : (
             habits.map((habit) => (
               <div
@@ -239,10 +238,10 @@ export default function DailyTracker({ goBack, refreshDashboard }) {
       {/* SCHEDULE */}
       {activeView === "schedule" && (
         <div className="glass p-4 mb-4">
-          <h4 className="mb-3">Today's Schedule</h4>
+          <h4 className="mb-3"><i className="fas fa-clock text-warning me-2"></i>Today's Schedule</h4>
 
           {timeline.length === 0 ? (
-            <p className="text-secondary">Nothing scheduled for today.</p>
+            <p className="text-secondary"><i className="far fa-calendar-xmark me-2"></i>Nothing scheduled for today.</p>
           ) : (
             timeline.map((task) => (
               <div
@@ -280,7 +279,7 @@ export default function DailyTracker({ goBack, refreshDashboard }) {
             border: "none",
           }}
         >
-          💾 Save Today's Progress
+          <i className="fas fa-floppy-disk me-2"></i> Save Today's Progress
         </button>
       </div>
     </div>
