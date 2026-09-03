@@ -17,23 +17,18 @@ export default function DailyTracker({ goBack, refreshDashboard }) {
   }, []);
 
   useEffect(() => {
-  const updateClock = () => {
-    const now = new Date();
-
-    const time =
-      String(now.getHours()).padStart(2, "0") +
-      ":" +
-      String(now.getMinutes()).padStart(2, "0");
-
-    setCurrentTime(time);
-  };
-
-  updateClock();
-
-  const interval = setInterval(updateClock, 60000);
-
-  return () => clearInterval(interval);
-}, []);
+    const updateClock = () => {
+      const now = new Date();
+      const time =
+        String(now.getHours()).padStart(2, "0") +
+        ":" +
+        String(now.getMinutes()).padStart(2, "0");
+      setCurrentTime(time);
+    };
+    updateClock(); // run immediately
+    const interval = setInterval(updateClock, 60000);
+    return () => clearInterval(interval);
+  }, []);
 
   // ---------- HABITS ----------
   const fetchHabits = async () => {
@@ -116,10 +111,16 @@ export default function DailyTracker({ goBack, refreshDashboard }) {
 
   useEffect(() => {
     const activeTask = timeline.find((task) => {
-      return (
-        currentTime >= task.start_time &&
-        currentTime < task.end_time
-      );
+      const start = task.start_time.slice(0, 5);
+      const end = task.end_time.slice(0, 5);
+
+      // Normal task (09:00–10:00)
+      if (start <= end) {
+        return currentTime >= start && currentTime < end;
+      }
+
+      // Overnight task (23:30–06:45)
+      return currentTime >= start || currentTime < end;
     });
 
     setCurrentActivityId(activeTask?.id || null);
@@ -216,7 +217,7 @@ export default function DailyTracker({ goBack, refreshDashboard }) {
               activeView === "habits" ? "btn-primary" : "btn-light"
             }`}
             onClick={() => setActiveView("habits")} >
-              <i class="fa-solid fa-person-walking me-2"></i> Today's Habits
+              <i className="fa-solid fa-person-walking me-2"></i> Today's Habits
           </button>
 
           <button
@@ -233,7 +234,7 @@ export default function DailyTracker({ goBack, refreshDashboard }) {
       {/* HABITS */}
       {activeView === "habits" && (
         <div className="glass p-4 mb-4">
-          <h4 className="mb-3"><i class="fa-solid fa-person-walking me-2"></i> Today's Habits</h4>
+          <h4 className="mb-3"><i className="fa-solid fa-person-walking me-2"></i> Today's Habits</h4>
 
           {habits.length === 0 ? (
             <p className="text-secondary"><i className="far fa-face-smile me-2"></i> No habits created yet.</p>
