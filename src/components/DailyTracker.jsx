@@ -69,28 +69,23 @@ export default function DailyTracker({ goBack, refreshDashboard }) {
     };
 
 
-    const toggleHabit = (id) => {
-        setHabits((prev) =>
-            prev.map((h) =>
-                h.id === id
-                    ? { ...h, completed: !h.completed }
-                    : h
-            )
-        );
-    };
+    // const toggleHabit = (id) => {
+    //     setHabits((prev) =>
+    //         prev.map((h) =>
+    //             h.id === id
+    //                 ? { ...h, completed: !h.completed }
+    //                 : h
+    //         )
+    //     );
+    // };
 
-    const timeline = schedule.map((task) => {
-        const matchedHabit = habits.find(
-            (h) => h.name.toLowerCase() === task.activity.toLowerCase()
-        );
+    const [completedTasks, setCompletedTasks] = useState({});
 
-        return {
-            ...task,
-            habitId: matchedHabit?.id || null,
-            completed: matchedHabit?.completed || false,
-            category: matchedHabit?.category || "Schedule",
-        };
-    });
+        const timeline = schedule.map((task) => ({
+        ...task,
+        completed: completedTasks[task.id] || false,
+        category: "Schedule",
+    }));
 
 
     const saveProgress = async () => {
@@ -123,20 +118,30 @@ export default function DailyTracker({ goBack, refreshDashboard }) {
         alert("Today's progress saved!");
     };
 
+    const toggleComplete = (task) => {
+        setCompletedTasks((prev) => ({
+            ...prev,
+            [task.id]: !prev[task.id],
+        }));
+    };
+
     return (
         <div className="container py-5 page-enter">
 
             {/* Header */}
             <div className="d-flex justify-content-between align-items-center mb-4">
                 <div>
-                    <h2 className="fw-bold mb-1">📊 Daily Tracker</h2>
+                    <h2 className="fw-bold mb-1">
+                        <i className="fas fa-chart-line me-2 text-primary"></i>
+                        Daily Tracker
+                    </h2>
                     <p className="text-secondary mb-0">
                     Follow your routine and complete today's habits
                     </p>
                 </div>
 
                 <button className="btn glass-btn px-4" onClick={goBack}>
-                    ← Dashboard
+                    <i className="fas fa-arrow-left me-2"></i>Dashboard
                 </button>
                 </div>
 
@@ -182,18 +187,12 @@ export default function DailyTracker({ goBack, refreshDashboard }) {
                         </div>
                         </div>
 
-                        {item.habitId ? (
                         <input
                             type="checkbox"
-                            className="form-check-input tracker-check"
+                            className="tracker-check"
                             checked={item.completed}
-                            onChange={() => toggleHabit(item.habitId)}
+                            onChange={() => toggleComplete(item)}
                         />
-                        ) : (
-                        <span className="event-pill">
-                            Event
-                        </span>
-                        )}
 
                     </div>
                     ))
