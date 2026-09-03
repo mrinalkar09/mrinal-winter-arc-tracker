@@ -341,7 +341,7 @@ export default function HabitSetup({ goBack, showToast }) {
                         height: 38,
                       }}
                     >
-                      <i className="fas fa-trash"></i>🗑
+                      <i className="fas fa-trash"></i>
                     </button>
 
                   </div>
