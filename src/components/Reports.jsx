@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
+
  
 
 export default function Reports({ goBack }) {
@@ -20,6 +21,12 @@ export default function Reports({ goBack }) {
     const [history, setHistory] = useState([]);
     const [historyPercent, setHistoryPercent] = useState(0);
 
+    const [scheduleHistory, setScheduleHistory] = useState([]);
+    
+    const [schedulePercent, setSchedulePercent] = useState(0);
+    const [completedSchedules, setCompletedSchedules] = useState(0);
+    const [totalSchedules, setTotalSchedules] = useState(0);
+
     const [monthPercent, setMonthPercent] = useState(0);
     const [completedMonth, setCompletedMonth] = useState(0);
     const [missedMonth, setMissedMonth] = useState(0);
@@ -34,7 +41,7 @@ export default function Reports({ goBack }) {
         loadHistory();
         loadMonthStats();
         loadCalendar();
-    }, [selectedDate, currentMonth]);
+    }, [selectedDate, currentMonth, weekOffset]);
 
     async function loadAnalytics() {
         const {
@@ -158,6 +165,36 @@ export default function Reports({ goBack }) {
                 `)
                 .eq("user_id", user.id)
                 .eq("log_date", selectedDate);
+
+            const { data: schedules } = await supabase
+                .from("schedule_logs")
+                .select(`
+                    completed,
+                    schedules (
+                    activity,
+                    start_time,
+                    end_time
+                    )
+                `)
+                .eq("user_id", user.id)
+                .eq("log_date", selectedDate);
+
+                setScheduleHistory(schedules || []);
+
+                const scheduleCompleted =
+                schedules?.filter((s) => s.completed).length || 0;
+
+                const scheduleTotal = schedules?.length || 0;
+
+                setCompletedSchedules(scheduleCompleted);
+                setTotalSchedules(scheduleTotal);
+
+                setSchedulePercent(
+                scheduleTotal === 0
+                    ? 0
+                    : Math.round((scheduleCompleted / scheduleTotal) * 100)
+            );
+
 
             const completed =
                 data?.filter((h) => h.completed).length || 0;
@@ -522,48 +559,94 @@ export default function Reports({ goBack }) {
         {/* History */}
         <div className="glass p-4">
 
-        <div className="d-flex justify-content-between align-items-center mb-3">
-            <div>
-            <h4 className="mb-0">Daily History</h4>
-            <small className="text-secondary">{selectedDate}</small>
-            </div>
-
-            <div className="category-pill">
-            {historyPercent}% Completed
-            </div>
-        </div>
-
-        {history.length===0 ?(
-            <div className="text-center py-4">
-            <div style={{fontSize:"46px"}}>📭</div>
-            <p className="text-secondary mb-0 mt-2">
-                No records for this day
-            </p>
-            </div>
-        ):(
-            history.map((item,index)=>(
-            <div
-                key={index}
-                className="timeline-card mb-3"
-            >
-
-                <div className="icon-box">
-                {item.completed ? "✅" : "⭕"}
+            <div className="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                <h4 className="mb-0">Daily History</h4>
+                <small className="text-secondary">{selectedDate}</small>
                 </div>
 
-                <div className="flex-grow-1">
-                <h5 className="mb-0">{item.habits?.name}</h5>
-                <small className="text-secondary">
-                    {item.habits?.category}
-                </small>
+                <div className="category-pill">
+                {historyPercent}% Completed
                 </div>
+            </div>
+
+            {history.length===0 ?(
+                <div className="text-center py-4">
+                <div style={{fontSize:"46px"}}>📭</div>
+                <p className="text-secondary mb-0 mt-2">
+                    No records for this day
+                </p>
+                </div>
+            ):(
+                history.map((item,index)=>(
+                <div
+                    key={index}
+                    className="timeline-card mb-3"
+                >
+
+                    <div className="icon-box">
+                    {item.completed ? "✅" : "⭕"}
+                    </div>
+
+                    <div className="flex-grow-1">
+                    <h5 className="mb-0">{item.habits?.name}</h5>
+                    <small className="text-secondary">
+                        {item.habits?.category}
+                    </small>
+                    </div>
+
+                </div>
+                ))
+            )}
+
+            <hr className="my-4" />
+
+                <div className="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <h4 className="mb-0">Today's Schedule</h4>
+                        <small className="text-secondary">
+                        {completedSchedules} of {totalSchedules} completed
+                        </small>
+                    </div>
+
+                        <div className="category-pill">
+                            {schedulePercent}% Completed
+                        </div>
+                    </div>
+
+                    {scheduleHistory.length === 0 ? (
+                    <div className="text-center py-4">
+                        <div style={{ fontSize: "42px" }}>📅</div>
+                        <p className="text-secondary mt-2 mb-0">
+                        No schedule records for this day
+                        </p>
+                    </div>
+                    ) : (
+                    scheduleHistory.map((item, index) => (
+                        <div
+                        key={index}
+                        className="timeline-card mb-3 d-flex justify-content-between align-items-center"
+                        >
+                            <div>
+                                <h6 className="mb-1">
+                                {item.schedules?.activity}
+                                </h6>
+
+                                <small className="text-secondary">
+                                {item.schedules?.start_time?.slice(0, 5)} –{" "}
+                                {item.schedules?.end_time?.slice(0, 5)}
+                                </small>
+                            </div>
+
+                            <div style={{ fontSize: "24px" }}>
+                                {item.completed ? "✅" : "⭕"}
+                            </div>
+                        </div>
+                    ))  
+                )}
 
             </div>
-            ))
-        )}
 
         </div>
-
-    </div>
     );
 }

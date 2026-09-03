@@ -90,7 +90,7 @@ function Home({ user, logout }) {
         {/* Header */}
         <div className="d-flex justify-content-between align-items-center mb-4">
             <div>
-                <h1 className="fw-bold">Welcome <span class="d-none d-md-block">back &nbsp;</span> 
+                <h1 className="fw-bold">Welcome&nbsp;
                     <span className="text-primary fw-bold">{user.user_metadata?.full_name || user.email}</span>
                 </h1> 
 
