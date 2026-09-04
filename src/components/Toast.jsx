@@ -17,25 +17,39 @@ export default function Toast({ toast, onClose }) {
     success: "fa-circle-check",
     error: "fa-circle-xmark",
     warning: "fa-triangle-exclamation",
-    info: "fa-circle-info",
+  };
+
+  const titles = {
+    success: "Success",
+    error: "Error",
+    warning: "Warning",
   };
 
   return (
-    <div className={`toast-glass toast-${toast.type}`}>
-      <div className="d-flex align-items-start gap-3">
-        <i className={`fas ${icons[toast.type]} toast-icon`}></i>
+    <div className="toast-container-custom">
+      <div className={`toast-card toast-${toast.type}`}>
+        <div className="toast-top">
+          <div className="toast-left">
+            <i className={`fas ${icons[toast.type]} toast-icon`}></i>
 
-        <div className="flex-grow-1">
-          <h6 className="mb-1">{toast.title}</h6>
-          <small>{toast.message}</small>
+            <div>
+              <h6 className="toast-title">
+                {toast.title || titles[toast.type]}
+              </h6>
+
+              <p className="toast-text">{toast.text}</p>
+            </div>
+          </div>
+
+          <button className="toast-close" onClick={onClose}>
+            <i className="fas fa-xmark"></i>
+          </button>
         </div>
 
-        <button className="toast-close" onClick={onClose}>
-          <i className="fas fa-xmark"></i>
-        </button>
+        <div className="toast-progress">
+          <div className="toast-progress-fill"></div>
+        </div>
       </div>
-
-      <div className="toast-progress"></div>
     </div>
   );
 }
