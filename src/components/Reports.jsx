@@ -308,7 +308,7 @@ export default function Reports({ goBack }) {
         {/* Header */}
         <div className="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h2 className="fw-bold mb-1"><i className="fas fa-chart-line me-2 text-primary"></i> Reports & Analytics</h2>
+            <h2 className="fw-bold mb-1" style={{fontSize:1}}><i className="fas fa-chart-line me-2 text-primary"></i> Reports & Analytics</h2>
             <p className="text-secondary mb-0">
             Track consistency, history & monthly progress
             </p>
@@ -519,7 +519,7 @@ export default function Reports({ goBack }) {
             ←
             </button>
 
-            <h4 className="mb-0">Weekly Progress</h4>
+            <h4 className="mb-0">Weekly Progress(Habit)</h4>
 
             <button
             className="btn glass"
@@ -567,7 +567,7 @@ export default function Reports({ goBack }) {
 
             <div className="d-flex justify-content-between align-items-center mb-3">
                 <div>
-                <h4 className="mb-0">Daily History</h4>
+                <h4 className="mb-0">Daily History(Habit)</h4>
                 <small className="text-secondary">{selectedDate}</small>
                 </div>
 
