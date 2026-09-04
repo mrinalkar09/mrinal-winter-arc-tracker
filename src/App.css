@@ -778,6 +778,7 @@ h1,h2,h3,h4,h5{
     gap: 12px;
     padding: 10px 0px;
     border-radius: 18px;
+    align-items: center !important;
   }
 
   .timeline-time{
