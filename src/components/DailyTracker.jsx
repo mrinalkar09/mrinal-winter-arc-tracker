@@ -153,6 +153,7 @@ export default function DailyTracker({ goBack, refreshDashboard, showToast, }) {
 
           showToast({
             type: "error",
+            title: "Save Failed",
             text: habitError.message,
           });
 
@@ -177,6 +178,7 @@ export default function DailyTracker({ goBack, refreshDashboard, showToast, }) {
           console.log(scheduleError);
           showToast({
             type: "error",
+            title: "Schedule Error",
             text: scheduleError.message,
           });
           return;
@@ -185,7 +187,8 @@ export default function DailyTracker({ goBack, refreshDashboard, showToast, }) {
         if (refreshDashboard) refreshDashboard();
         showToast({
           type: "success",
-          text: "Today's progress saved successfully!",
+          title: "Progress Saved",
+          text: "Today's habits and schedule have been saved.",
         });
     }; 
 
