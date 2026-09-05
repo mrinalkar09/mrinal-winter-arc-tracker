@@ -395,7 +395,7 @@ export default function Reports({ goBack }) {
         {/* Top Stats */}
         <div className="row g-3 mb-4">
 
-        <div className="col-md-4">
+        <div className="col-6 col-md-4">
             <div className="glass p-4 h-100">
             <div className="icon-box mb-3"><i className="fas fa-bullseye" style={{ color: "white" }}></i></div>
             <small>Total Habits</small>
@@ -403,7 +403,7 @@ export default function Reports({ goBack }) {
             </div>
         </div>
 
-        <div className="col-md-4">
+        <div className="col-6 col-md-4">
             <div className="glass p-4 h-100">
             <div className="icon-box mb-3"><i className="fas fa-circle-check" style={{ color: "white" }}></i></div>
             <small>Selected Day</small>
@@ -411,7 +411,7 @@ export default function Reports({ goBack }) {
             </div>
         </div>
 
-        <div className="col-md-4">
+        <div className="col-6 col-md-4">
             <div className="glass p-4 h-100">
             <div className="icon-box mb-3"><i className="fas fa-fire" style={{ color: "white" }}></i></div>
             <small>Current Streak</small>
