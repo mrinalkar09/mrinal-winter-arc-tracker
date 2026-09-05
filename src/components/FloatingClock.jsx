@@ -26,7 +26,7 @@ export default function FloatingClock() {
   });
 
   return (
-    <div className="floating-clock">
+    <div className="floating-clock d-none">
       <div className="clock-live">
         <span className="live-dot"></span>
         LIVE
