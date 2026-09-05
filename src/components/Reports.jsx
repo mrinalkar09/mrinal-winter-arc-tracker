@@ -27,6 +27,7 @@ export default function Reports({ goBack }) {
     const [schedulePercent, setSchedulePercent] = useState(0);
     const [completedSchedules, setCompletedSchedules] = useState(0);
     const [totalSchedules, setTotalSchedules] = useState(0);
+    const [missedSchedules, setMissedSchedules] = useState(0);
 
     const [monthPercent, setMonthPercent] = useState(0);
     const [completedMonth, setCompletedMonth] = useState(0);
@@ -230,6 +231,7 @@ export default function Reports({ goBack }) {
                         ? 0
                         : Math.round((scheduleCompleted / scheduleTotal) * 100)
                     );
+                setMissedSchedules(scheduleTotal - scheduleCompleted);
 
                 // Habit statistics
                 const completed =
@@ -395,29 +397,40 @@ export default function Reports({ goBack }) {
         {/* Top Stats */}
         <div className="row g-3 mb-4">
 
-        <div className="col-6 col-md-4">
-            <div className="glass p-4 h-100">
-            <div className="icon-box mb-3"><i className="fas fa-bullseye" style={{ color: "white" }}></i></div>
-            <small>Total Habits</small>
-            <h2>{totalHabits}</h2>
+            <div className="col-6 col-md-4">
+                <div className="glass p-4 h-100">
+                <div className="icon-box mb-3"><i className="fas fa-bullseye" style={{ color: "white" }}></i></div>
+                <small>Total Habits</small>
+                <h2>{totalHabits}</h2>
+                </div>
             </div>
-        </div>
 
-        <div className="col-6 col-md-4">
-            <div className="glass p-4 h-100">
-            <div className="icon-box mb-3"><i className="fas fa-circle-check" style={{ color: "white" }}></i></div>
-            <small>Selected Day</small>
-            <h2>{completedToday}%</h2>
+            <div className="col-6 col-md-4">
+                <div className="glass p-4 h-100">
+                <div className="icon-box mb-3"><i className="fas fa-circle-check" style={{ color: "white" }}></i></div>
+                <small>Selected Day</small>
+                <h2>{completedToday}%</h2>
+                </div>
             </div>
-        </div>
 
-        <div className="col-6 col-md-4">
-            <div className="glass p-4 h-100">
-            <div className="icon-box mb-3"><i className="fas fa-fire" style={{ color: "white" }}></i></div>
-            <small>Current Streak</small>
-            <h2>{streak}</h2>
+            <div className="col-6 col-md-4">
+                <div className="glass p-4 h-100">
+                <div className="icon-box mb-3"><i className="fas fa-fire" style={{ color: "white" }}></i></div>
+                <small>Current Streak</small>
+                <h2>{streak}</h2>
+                </div>
             </div>
-        </div>
+
+            <div className="col-6 col-md-4">
+                <div className="glass p-4 h-100">
+                    <div className="icon-box mb-3">
+                    <i className="fas fa-calendar-xmark" style={{ color: "white" }}></i>
+                    </div>
+
+                    <small>Missed Schedule</small>
+                    <h2>{missedSchedules}</h2>
+                </div>
+            </div>
 
         </div>
 
