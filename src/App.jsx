@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "./lib/supabase";
 import Home from "./pages/Home";
 import Toast from "./components/Toast";
+import FloatingClock from "./components/FloatingClock";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -67,7 +68,12 @@ function App() {
   if (user) {
     return (
       <>
-        <Toast toast={toast} onClose={() => setToast(null)} />
+        <FloatingClock />
+
+        <Toast
+          toast={toast}
+          onClose={() => setToast(null)}
+        />
 
         <Home
           user={user}
