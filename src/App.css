@@ -683,6 +683,24 @@ h1,h2,h3,h4,h5{
 }
 
 
+/* ===== Calendar Legend ===== */
+
+.legend-dot{
+  width:14px;
+  height:14px;
+  border-radius:50%;
+}
+
+.legend-selected{
+  background:#4F7CFF;
+  box-shadow:0 0 0 3px rgba(79,124,255,.18);
+}
+
+.legend-completed{
+  background:#22C55E;
+}
+
+
 /* ========================================
    MOBILE RESPONSIVE (≤768px)
 ======================================== */

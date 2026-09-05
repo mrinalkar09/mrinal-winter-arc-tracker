@@ -12,6 +12,7 @@ export default function Reports({ goBack }) {
     const [weeklyData, setWeeklyData] = useState([]);
 
     const [weekOffset, setWeekOffset] = useState(0);
+    const [weekRange, setWeekRange] = useState("");
     
     const [selectedDate, setSelectedDate] = useState(
         new Date().toISOString().split("T")[0]
@@ -85,7 +86,8 @@ export default function Reports({ goBack }) {
         const uniqueDays = [...new Set(logs?.map(l => l.log_date) || [])];
 
         let current = 0;
-        let date = new Date();
+        let date = new Date(selectedDate);
+
 
         while (true) {
             const day = date.toISOString().split("T")[0];
@@ -106,6 +108,19 @@ export default function Reports({ goBack }) {
         const weekStart = new Date();
             weekStart.setDate(
             weekStart.getDate() - weekStart.getDay() + weekOffset * 7
+            );
+
+            const weekEnd = new Date(weekStart);
+                weekEnd.setDate(weekStart.getDate() + 6);
+
+                setWeekRange(
+                `${weekStart.toLocaleDateString("en-US", {
+                    day: "numeric",
+                    month: "short",
+                })} - ${weekEnd.toLocaleDateString("en-US", {
+                    day: "numeric",
+                    month: "short",
+                })}`
             );
 
             const result = [];
@@ -187,6 +202,20 @@ export default function Reports({ goBack }) {
                 );
 
                 setScheduleHistory(sortedSchedules);
+
+                const totalScheduleCount = sortedSchedules.length;
+                const completedScheduleCount = sortedSchedules.filter(
+                (s) => s.completed
+                ).length;
+
+                setTotalSchedules(totalScheduleCount);
+                setCompletedSchedules(completedScheduleCount);
+
+                setSchedulePercent(
+                totalScheduleCount === 0
+                    ? 0
+                    : Math.round((completedScheduleCount / totalScheduleCount) * 100)
+                );
 
                 // Schedule statistics
                 const scheduleCompleted =
@@ -429,6 +458,19 @@ export default function Reports({ goBack }) {
             ))}
         </div>
 
+
+        <div className="d-flex justify-content-center gap-4 mb-3 flex-wrap">
+            <div className="d-flex align-items-center gap-2">
+                <div className="legend-dot legend-selected"></div>
+                <small className="text-secondary">Selected</small>
+            </div>
+
+            <div className="d-flex align-items-center gap-2">
+                <div className="legend-dot legend-completed"></div>
+                <small className="text-secondary">Completed</small>
+            </div>
+        </div>
+
         <div className="calendar-grid">
             {Array.from({length:firstDay}).map((_,i)=>(
             <div key={i}></div>
@@ -520,7 +562,8 @@ export default function Reports({ goBack }) {
             </button>
 
             <h4 className="mb-0">Weekly Progress(Habit)</h4>
-
+            <small className="text-secondary">{weekRange}</small>
+            
             <button
             className="btn glass"
             disabled={weekOffset===0}
