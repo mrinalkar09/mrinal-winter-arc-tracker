@@ -85,7 +85,7 @@ export default function DailyTracker({ goBack, refreshDashboard, showToast, }) {
       .select("*")
       .eq("user_id", user.id)
       .eq("day_of_week", weekday)
-      .order("start_time");
+      .eq("is_active", true)
 
     const { data: logs } = await supabase
       .from("schedule_logs")

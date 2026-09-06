@@ -42,7 +42,7 @@ export default function ScheduleSetup({ goBack, showToast }) {
 
     const { data, error } = await supabase
       .from("schedules")
-      .select("*")
+      .select("*, is_active")
       .eq("user_id", user.id)
       .eq("day_of_week", activeDay)
       .order("start_time", { ascending: true });
@@ -102,6 +102,7 @@ export default function ScheduleSetup({ goBack, showToast }) {
           activity,
           start_time: start,
           end_time: end,
+          is_active: true,
         },
       ]);
 
@@ -137,6 +138,33 @@ export default function ScheduleSetup({ goBack, showToast }) {
     setActivity(task.activity);
     setStart(task.start_time);
     setEnd(task.end_time);
+  };
+
+
+  const toggleTaskStatus = async (task) => {
+    const { error } = await supabase
+      .from("schedules")
+      .update({
+        is_active: !task.is_active,
+      })
+      .eq("id", task.id);
+
+    if (error) {
+      showToast({
+        type: "error",
+        text: error.message,
+      });
+      return;
+    }
+
+    fetchSchedule();
+
+    showToast({
+      type: "success",
+      text: task.is_active
+        ? "Schedule deactivated!"
+        : "Schedule activated!",
+    });
   };
 
 
@@ -386,14 +414,20 @@ export default function ScheduleSetup({ goBack, showToast }) {
           </div>
         ):(
           sortedSchedule.map((item) => (
-            <div key={item.id} className="timeline-card mb-3">
+            <div key={item.id} className="timeline-card mb-3" style={{   opacity: item.is_active ? 1 : 0.55,   filter: item.is_active ? "none" : "grayscale(30%)", }} >
 
               <div className="timeline-time">
                 {item.start_time.slice(0,5)}
               </div>
 
               <div className="flex-grow-1">
-                <h5 className="mb-1">{item.activity}</h5>
+                <div className="d-flex align-items-center gap-2">
+                  <h5 className="mb-1">{item.activity}</h5>
+
+                  {!item.is_active && (
+                    <span className="badge bg-secondary">Inactive</span>
+                  )}
+                </div>
                 <small className="text-secondary">
                   {item.start_time.slice(0,5)} — {item.end_time.slice(0,5)}
                 </small>
@@ -412,14 +446,20 @@ export default function ScheduleSetup({ goBack, showToast }) {
                 </button>
 
                 <button
-                  className="btn btn-sm delete-glass rounded-circle"
-                  onClick={() => deleteTask(item.id)}
+                  className={`btn btn-sm rounded-circle ${
+                    item.is_active ? "btn-warning" : "btn-success"
+                  }`}
+                  onClick={() => toggleTaskStatus(item)}
                   style={{
                     width: 38,
                     height: 38,
                   }}
                 >
-                  <i className="fas fa-trash"></i>
+                  <i
+                    className={`fas ${
+                      item.is_active ? "fa-pause" : "fa-play"
+                    }`}
+                  ></i>
                 </button>
 
               </div>
