@@ -102,6 +102,74 @@ export default function DailyTracker({ goBack, refreshDashboard, showToast, }) {
     setScheduleLogs(map);
   };
 
+
+  // 👇 PASTE HERE
+  const saveHabit = async (habitId, completed) => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    const today = new Date().toISOString().split("T")[0];
+
+    const { error } = await supabase
+      .from("habit_logs")
+      .upsert(
+        {
+          user_id: user.id,
+          habit_id: habitId,
+          log_date: today,
+          completed,
+        },
+        {
+          onConflict: "user_id,habit_id,log_date",
+        }
+      );
+
+    if (error) {
+      showToast({
+        type: "error",
+        title: "Save Failed",
+        text: error.message,
+      });
+      return;
+    }
+
+    refreshDashboard?.();
+  };
+
+  const saveSchedule = async (scheduleId, completed) => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    const today = new Date().toISOString().split("T")[0];
+
+    const { error } = await supabase
+      .from("schedule_logs")
+      .upsert(
+        {
+          user_id: user.id,
+          schedule_id: scheduleId,
+          log_date: today,
+          completed,
+        },
+        {
+          onConflict: "user_id,schedule_id,log_date",
+        }
+      );
+
+    if (error) {
+      showToast({
+        type: "error",
+        title: "Save Failed",
+        text: error.message,
+      });
+      return;
+    }
+
+    refreshDashboard?.();
+  };
+
   const timeline = [...schedule]
   .sort((a, b) => a.start_time.localeCompare(b.start_time))
   .map((task) => ({
