@@ -334,15 +334,27 @@ export default function DailyTracker({ goBack, refreshDashboard, showToast, }) {
                   type="checkbox"
                   style={{ width: 22, height: 22 }}
                   checked={habit.completed}
-                  onChange={() =>
+                  onChange={async () => {
+                    const newValue = !habit.completed;
+
+                    // Update UI instantly
                     setHabits((prev) =>
                       prev.map((h) =>
                         h.id === habit.id
-                          ? { ...h, completed: !h.completed }
+                          ? { ...h, completed: newValue }
                           : h
                       )
-                    )
-                  }
+                    );
+
+                    // Save to database
+                    await saveHabit(habit.id, newValue);
+
+                    showToast({
+                      type: "success",
+                      title: "Saved",
+                      text: `${habit.name} updated`,
+                    });
+                  }}
                 />
               </div>
             ))
