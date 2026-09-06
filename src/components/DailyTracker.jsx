@@ -260,15 +260,7 @@ export default function DailyTracker({ goBack, refreshDashboard, showToast, }) {
         });
     }; 
 
-
-
-
-  const toggleSchedule = (id) => {
-    setScheduleLogs((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
-  };
+ 
 
   return (
     <div className="container py-5 page-enter">
@@ -396,7 +388,22 @@ export default function DailyTracker({ goBack, refreshDashboard, showToast, }) {
                   type="checkbox"
                   style={{ width: 22, height: 22 }}
                   checked={task.completed}
-                  onChange={() => toggleSchedule(task.id)}
+                  onChange={async () => {
+                    const newValue = !task.completed;
+
+                    setScheduleLogs((prev) => ({
+                      ...prev,
+                      [task.id]: newValue,
+                    }));
+
+                    await saveSchedule(task.id, newValue);
+
+                    showToast({
+                      type: "success",
+                      title: "Saved",
+                      text: `${task.activity} updated`,
+                    });
+                  }}
                 />
               </div>
             ))
@@ -405,7 +412,7 @@ export default function DailyTracker({ goBack, refreshDashboard, showToast, }) {
       )}
 
       {/* SAVE */}
-      <div className="glass p-4">
+      <div className="glass p-4 d-none">
         <button
           className="btn w-100 text-white fw-semibold py-3 rounded-4"
           onClick={saveProgress}
