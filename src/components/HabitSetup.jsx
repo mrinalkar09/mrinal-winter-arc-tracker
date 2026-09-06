@@ -22,7 +22,7 @@ export default function HabitSetup({ goBack, showToast }) {
 
     const { data } = await supabase
       .from("habits")
-      .select("*")
+      .select("*, is_active")
       .eq("user_id", user.id)
       .order("created_at", { ascending: false });
 
@@ -92,6 +92,7 @@ export default function HabitSetup({ goBack, showToast }) {
             name: habitName.trim(),
             category,
             habit_type: habitType,
+            is_active: true,
           },
         ]);
 
@@ -127,24 +128,50 @@ export default function HabitSetup({ goBack, showToast }) {
     setHabitType(habit.habit_type);
   };
 
-  const deleteHabit = async (id) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this habit?"
-    );
+  const toggleHabitStatus = async (habit) => {
+    const { error } = await supabase
+      .from("habits")
+      .update({
+        is_active: !habit.is_active,
+      })
+      .eq("id", habit.id);
 
-    if (!confirmDelete) return;
-
-    await supabase.from("habits").delete().eq("id", id);
-
-    if (editingId === id) {
-      setEditingId(null);
-      setHabitName("");
-      setCategory("Health");
-      setHabitType("daily");
+    if (error) {
+      showToast({
+        type: "error",
+        text: error.message,
+      });
+      return;
     }
 
     fetchHabits();
+
+    showToast({
+      type: "success",
+      text: !habit.is_active
+        ? "Habit activated!"
+        : "Habit deactivated!",
+    });
   };
+
+  // const deleteHabit = async (id) => {
+  //   const confirmDelete = window.confirm(
+  //     "Are you sure you want to delete this habit?"
+  //   );
+
+  //   if (!confirmDelete) return;
+
+  //   await supabase.from("habits").delete().eq("id", id);
+
+  //   if (editingId === id) {
+  //     setEditingId(null);
+  //     setHabitName("");
+  //     setCategory("Health");
+  //     setHabitType("daily");
+  //   }
+
+  //   fetchHabits();
+  // };
 
   return (
      <div className="container py-5 page-enter">
@@ -306,7 +333,11 @@ export default function HabitSetup({ goBack, showToast }) {
           <div className="row g-3">
             {habits.map((habit) => (
               <div className="col-md-6" key={habit.id}>
-                <div className="habit-item p-3 h-100">
+                <div className="habit-item p-3 h-100" style={{
+                      opacity: habit.is_active ? 1 : 0.55,
+                      filter: habit.is_active ? "none" : "grayscale(30%)",
+                    }}
+                  >
                   <div className="d-flex justify-content-between align-items-start">
                     <div>
                       <h5 className="mb-1">{habit.name}</h5>
@@ -318,6 +349,10 @@ export default function HabitSetup({ goBack, showToast }) {
                       <span className="type-pill">
                         {habit.habit_type}
                       </span>
+                      {!habit.is_active && (
+                        <span className="badge bg-secondary ms-2">Inactive</span>
+                      )}
+
                     </div>
 
                   <div className="d-flex gap-2">
@@ -333,15 +368,23 @@ export default function HabitSetup({ goBack, showToast }) {
                       <i className="fas fa-pen"></i>
                     </button>
 
+
+
                     <button
-                      className="btn btn-sm btn-danger rounded-circle"
-                      onClick={() => deleteHabit(habit.id)}
+                      className={`btn btn-sm rounded-circle ${
+                        habit.is_active ? "btn-warning" : "btn-success"
+                      }`}
+                      onClick={() => toggleHabitStatus(habit)}
                       style={{
                         width: 38,
                         height: 38,
                       }}
                     >
-                      <i className="fas fa-trash"></i>
+                      <i
+                        className={`fas ${
+                          habit.is_active ? "fa-pause" : "fa-play"
+                        }`}
+                      ></i>
                     </button>
 
                   </div>

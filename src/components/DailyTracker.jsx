@@ -43,7 +43,8 @@ export default function DailyTracker({ goBack, refreshDashboard, showToast, }) {
     const { data: habitsData } = await supabase
       .from("habits")
       .select("*")
-      .eq("user_id", user.id);
+      .eq("user_id", user.id)
+      .eq("is_active", true);
 
     const { data: logs } = await supabase
       .from("habit_logs")
