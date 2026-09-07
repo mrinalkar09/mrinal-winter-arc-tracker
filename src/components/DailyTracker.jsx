@@ -87,11 +87,11 @@ export default function DailyTracker({ goBack, refreshDashboard, showToast, }) {
     const today = new Date().toISOString().split("T")[0];
 
     const { data: schedules } = await supabase
-      .from("schedules")
-      .select("*")
-      .eq("user_id", user.id)
-      .eq("day_of_week", weekday)
-      .eq("is_active", true)
+    .from("schedules")
+    .select("*")
+    .eq("user_id", user.id)
+    .eq("day_of_week", weekday)
+    .order("start_time", { ascending: true });
 
     const { data: logs } = await supabase
       .from("schedule_logs")
@@ -183,6 +183,7 @@ export default function DailyTracker({ goBack, refreshDashboard, showToast, }) {
 
 
   const checkUpcomingReminder = () => {
+    if (!("Notification" in window)) return;
     if (Notification.permission !== "granted") return;
 
     const now = new Date();
@@ -194,11 +195,9 @@ export default function DailyTracker({ goBack, refreshDashboard, showToast, }) {
 
       const diff = startMinutes - currentMinutes;
 
-      // Notify exactly 10 minutes before
-      if (diff === 10 && lastNotification !== task.id) {
+      if (diff === 1 && lastNotification !== task.id) {
         new Notification(`Upcoming: ${task.activity}`, {
           body: `Starts at ${task.start_time.slice(0, 5)} • Get ready!`,
-          icon: "/favicon.ico",
         });
 
         setLastNotification(task.id);
