@@ -10,17 +10,10 @@ export default function DailyTracker({ goBack, refreshDashboard, showToast, }) {
 
   const [currentTime, setCurrentTime] = useState("");
   const [currentActivityId, setCurrentActivityId] = useState(null);
-  const [lastNotification, setLastNotification] = useState(null);
 
   useEffect(() => {
     fetchHabits();
     fetchSchedule();
-
-    if ("Notification" in window) {
-      Notification.requestPermission().then((permission) => {
-        console.log("Notification:", permission);
-      });
-    }
   }, []);
 
   useEffect(() => {
@@ -88,11 +81,11 @@ export default function DailyTracker({ goBack, refreshDashboard, showToast, }) {
     const today = new Date().toISOString().split("T")[0];
 
     const { data: schedules } = await supabase
-    .from("schedules")
-    .select("*")
-    .eq("user_id", user.id)
-    .eq("day_of_week", weekday)
-    .order("start_time", { ascending: true });
+      .from("schedules")
+      .select("*")
+      .eq("user_id", user.id)
+      .eq("day_of_week", weekday)
+      .eq("is_active", true)
 
     const { data: logs } = await supabase
       .from("schedule_logs")
@@ -145,10 +138,6 @@ export default function DailyTracker({ goBack, refreshDashboard, showToast, }) {
     refreshDashboard?.();
   };
 
-
-
-
-
   const saveSchedule = async (scheduleId, completed) => {
     const {
       data: { user },
@@ -182,31 +171,6 @@ export default function DailyTracker({ goBack, refreshDashboard, showToast, }) {
     refreshDashboard?.();
   };
 
-
-  const checkUpcomingReminder = () => {
-    if (!("Notification" in window)) return;
-    if (Notification.permission !== "granted") return;
-
-    const now = new Date();
-    const currentMinutes = now.getHours() * 60 + now.getMinutes();
-
-    timeline.forEach((task) => {
-      const [hour, minute] = task.start_time.split(":").map(Number);
-      const startMinutes = hour * 60 + minute;
-
-      const diff = startMinutes - currentMinutes;
-
-      if (diff === 10 && lastNotification !== task.id) {
-        new Notification(`Upcoming: ${task.activity}`, {
-          body: `Starts at ${task.start_time.slice(0, 5)} • Get ready!`,
-        });
-
-        setLastNotification(task.id);
-      }
-    });
-  };
-
-  
   const timeline = [...schedule]
   .sort((a, b) => a.start_time.localeCompare(b.start_time))
   .map((task) => ({
@@ -219,18 +183,16 @@ export default function DailyTracker({ goBack, refreshDashboard, showToast, }) {
       const start = task.start_time.slice(0, 5);
       const end = task.end_time.slice(0, 5);
 
+      // Normal task (09:00–10:00)
       if (start <= end) {
         return currentTime >= start && currentTime < end;
       }
 
+      // Overnight task (23:30–06:45)
       return currentTime >= start || currentTime < end;
     });
 
     setCurrentActivityId(activeTask?.id || null);
-
-    // Check 10-minute reminder
-    checkUpcomingReminder();
-
   }, [timeline, currentTime]);
 
     // ---------- SAVE BOTH ----------
