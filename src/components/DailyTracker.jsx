@@ -10,10 +10,16 @@ export default function DailyTracker({ goBack, refreshDashboard, showToast, }) {
 
   const [currentTime, setCurrentTime] = useState("");
   const [currentActivityId, setCurrentActivityId] = useState(null);
+  const [lastNotification, setLastNotification] = useState(null);
 
   useEffect(() => {
     fetchHabits();
     fetchSchedule();
+
+    // Ask notification permission once
+    if ("Notification" in window && Notification.permission === "default") {
+      Notification.requestPermission();
+    }
   }, []);
 
   useEffect(() => {
@@ -138,6 +144,10 @@ export default function DailyTracker({ goBack, refreshDashboard, showToast, }) {
     refreshDashboard?.();
   };
 
+
+
+
+
   const saveSchedule = async (scheduleId, completed) => {
     const {
       data: { user },
@@ -171,6 +181,32 @@ export default function DailyTracker({ goBack, refreshDashboard, showToast, }) {
     refreshDashboard?.();
   };
 
+
+  const checkUpcomingReminder = () => {
+    if (Notification.permission !== "granted") return;
+
+    const now = new Date();
+    const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+    timeline.forEach((task) => {
+      const [hour, minute] = task.start_time.split(":").map(Number);
+      const startMinutes = hour * 60 + minute;
+
+      const diff = startMinutes - currentMinutes;
+
+      // Notify exactly 10 minutes before
+      if (diff === 10 && lastNotification !== task.id) {
+        new Notification(`Upcoming: ${task.activity}`, {
+          body: `Starts at ${task.start_time.slice(0, 5)} • Get ready!`,
+          icon: "/favicon.ico",
+        });
+
+        setLastNotification(task.id);
+      }
+    });
+  };
+
+  
   const timeline = [...schedule]
   .sort((a, b) => a.start_time.localeCompare(b.start_time))
   .map((task) => ({
@@ -183,16 +219,18 @@ export default function DailyTracker({ goBack, refreshDashboard, showToast, }) {
       const start = task.start_time.slice(0, 5);
       const end = task.end_time.slice(0, 5);
 
-      // Normal task (09:00–10:00)
       if (start <= end) {
         return currentTime >= start && currentTime < end;
       }
 
-      // Overnight task (23:30–06:45)
       return currentTime >= start || currentTime < end;
     });
 
     setCurrentActivityId(activeTask?.id || null);
+
+    // Check 10-minute reminder
+    checkUpcomingReminder();
+
   }, [timeline, currentTime]);
 
     // ---------- SAVE BOTH ----------
