@@ -16,16 +16,10 @@ export default function DailyTracker({ goBack, refreshDashboard, showToast, }) {
     fetchHabits();
     fetchSchedule();
 
-    // Ask notification permission once
-    if ("Notification" in window && Notification.permission === "default") {
-      Notification.requestPermission();
-    }
-  }, []);
-
-  // Ask notification permission once
-  useEffect(() => {
-    if ("Notification" in window && Notification.permission === "default") {
-      Notification.requestPermission();
+    if ("Notification" in window) {
+      Notification.requestPermission().then((permission) => {
+        console.log("Notification:", permission);
+      });
     }
   }, []);
 
@@ -202,7 +196,7 @@ export default function DailyTracker({ goBack, refreshDashboard, showToast, }) {
 
       const diff = startMinutes - currentMinutes;
 
-      if (diff === 1 && lastNotification !== task.id) {
+      if (diff === 10 && lastNotification !== task.id) {
         new Notification(`Upcoming: ${task.activity}`, {
           body: `Starts at ${task.start_time.slice(0, 5)} • Get ready!`,
         });
