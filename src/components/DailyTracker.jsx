@@ -22,6 +22,13 @@ export default function DailyTracker({ goBack, refreshDashboard, showToast, }) {
     }
   }, []);
 
+  // Ask notification permission once
+  useEffect(() => {
+    if ("Notification" in window && Notification.permission === "default") {
+      Notification.requestPermission();
+    }
+  }, []);
+
   useEffect(() => {
     const updateClock = () => {
       const now = new Date();
