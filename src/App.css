@@ -683,6 +683,120 @@ h1,h2,h3,h4,h5{
 }
 
 
+
+/* ===========================
+   HABIT ANALYTICS
+=========================== */
+
+.habit-month-grid{
+  display:grid;
+  grid-template-columns:repeat(10, 1fr);
+  gap:10px;
+}
+
+.habit-day{
+  aspect-ratio:1;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:600;
+  background:rgba(255,255,255,.35);
+  border:1px solid rgba(255,255,255,.45);
+}
+
+.habit-day.completed{
+  background:linear-gradient(
+    135deg,
+    #63E8FF,
+    #4F7CFF
+  );
+  color:white;
+  box-shadow:0 8px 18px rgba(79,124,255,.25);
+}
+
+.habit-day.missed{
+  background:rgba(255,255,255,.55);
+  color:#94A3B8;
+}
+
+.habit-day.empty{
+  background:rgba(255,255,255,.18);
+  color:#94A3B8;
+}
+
+.analytics-dot{
+  width:12px;
+  height:12px;
+  border-radius:50%;
+  display:inline-block;
+}
+
+.analytics-dot.completed{
+  background:#4F7CFF;
+}
+
+.analytics-dot.missed{
+  background:#CBD5E1;
+}
+
+.analytics-dot.empty{
+  background:rgba(203,213,225,.35);
+  border:1px solid #CBD5E1;
+}
+
+/* ---------- CHART ---------- */
+
+.habit-chart{
+  height:260px;
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:8px;
+  overflow-x:auto;
+  padding:10px 4px 0;
+}
+
+.habit-chart-column{
+  min-width:28px;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  align-items:center;
+}
+
+.chart-percent{
+  font-size:10px;
+  font-weight:700;
+  margin-bottom:6px;
+}
+
+.chart-bar-container{
+  height:190px;
+  display:flex;
+  align-items:flex-end;
+}
+
+.habit-chart-bar{
+  width:20px;
+  min-height:5px;
+  border-radius:12px 12px 6px 6px;
+  background:linear-gradient(
+    180deg,
+    #63E8FF,
+    #4F7CFF
+  );
+  box-shadow:0 8px 18px rgba(79,124,255,.2);
+  transition:.3s ease;
+}
+
+.chart-label{
+  margin-top:8px;
+  font-size:10px;
+}
+
+
 /* ========================================
    MOBILE RESPONSIVE (≤768px)
 ======================================== */
@@ -864,5 +978,41 @@ h1,h2,h3,h4,h5{
     align-items: flex-start !important;
     gap: 12px;
   }
+
+
+  /* ----------HABIT ANALYTICS MOBILE ---------- */
+
+
+  .habit-month-grid{
+    grid-template-columns:repeat(7, 1fr);
+    gap:7px;
+  }
+
+  .habit-day{
+    border-radius:10px;
+    font-size:.75rem;
+  }
+
+  .habit-chart{
+    height:220px;
+    gap:6px;
+  }
+
+  .habit-chart-column{
+    min-width:25px;
+  }
+
+  .habit-chart-bar{
+    width:16px;
+  }
+
+  .chart-percent{
+    font-size:8px;
+  }
+
+  .chart-label{
+    font-size:9px;
+  }
+
 
 }

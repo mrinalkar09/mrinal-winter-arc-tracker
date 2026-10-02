@@ -4,6 +4,7 @@ import ScheduleSetup from "../components/ScheduleSetup";
 import HabitSetup from "../components/HabitSetup";
 import DailyTracker from "../components/DailyTracker";
 import Reports from "../components/Reports";
+import HabitAnalytics from "../components/HabitAnalytics";
 
 function Home({ user, logout, showToast }) {
   const [screen, setScreen] = useState("dashboard");
@@ -92,6 +93,14 @@ function Home({ user, logout, showToast }) {
 
   if (screen === "reports") {
     return <Reports goBack={() => setScreen("dashboard")} />;
+  }
+
+  if (screen === "analytics") {
+    return (
+      <HabitAnalytics
+        goBack={() => setScreen("dashboard")}
+      />
+    );
   }
 
   const percentage =
@@ -184,68 +193,108 @@ function Home({ user, logout, showToast }) {
             </div>
 
             {/* Navigation */}
-            <div className="row g-4 text-center text-md-start">
-              <div className="col-6 col-md-3">
-                <div className="feature-card tracker-card" onClick={() => setScreen("tracker")}>
-                  <div className="feature-icon">
-                    <i className="fas fa-list-check"></i>
+              <div className="row g-4 text-center text-md-start">
+
+                {/* DAILY TRACKER */}
+                <div className="col-6 col-md-4">
+                  <div
+                    className="feature-card tracker-card"
+                    onClick={() => setScreen("tracker")}
+                  >
+                    <div className="feature-icon">
+                      <i className="fas fa-list-check"></i>
+                    </div>
+
+                    <h4>Daily Tracker</h4>
+                    <p>Complete today's habits</p>
+
+                    <span className="feature-arrow">
+                      <i className="fas fa-arrow-right"></i>
+                    </span>
                   </div>
-
-                  <h4>Daily Tracker</h4>
-                  <p>Complete today's habits</p>
-
-                  <span className="feature-arrow">
-                    <i className="fas fa-arrow-right"></i>
-                  </span>
                 </div>
-              </div>
 
-              <div className="col-6 col-md-3">
-                <div className="feature-card habit-card" onClick={() => setScreen("habits")}>
-                  <div className="feature-icon">
-                    <i className="fas fa-seedling"></i>
+
+                {/* HABIT SETUP */}
+                <div className="col-6 col-md-4">
+                  <div
+                    className="feature-card habit-card"
+                    onClick={() => setScreen("habits")}
+                  >
+                    <div className="feature-icon">
+                      <i className="fas fa-seedling"></i>
+                    </div>
+
+                    <h4>Habit Setup</h4>
+                    <p>Create & manage habits</p>
+
+                    <span className="feature-arrow">
+                      <i className="fas fa-arrow-right"></i>
+                    </span>
                   </div>
-
-                  <h4>Habit Setup</h4>
-                  <p>Create & manage habits</p>
-
-                  <span className="feature-arrow">
-                    <i className="fas fa-arrow-right"></i>
-                  </span>
                 </div>
-              </div>
 
-              <div className="col-6 col-md-3">
-                <div className="feature-card schedule-card" onClick={() => setScreen("schedule")}>
-                  <div className="feature-icon">
-                    <i className="fas fa-calendar-days"></i>
+
+                {/* SCHEDULE */}
+                <div className="col-6 col-md-4">
+                  <div
+                    className="feature-card schedule-card"
+                    onClick={() => setScreen("schedule")}
+                  >
+                    <div className="feature-icon">
+                      <i className="fas fa-calendar-days"></i>
+                    </div>
+
+                    <h4>Schedule</h4>
+                    <p>Plan your weekly routine</p>
+
+                    <span className="feature-arrow">
+                      <i className="fas fa-arrow-right"></i>
+                    </span>
                   </div>
-
-                  <h4>Schedule</h4>
-                  <p>Plan your weekly routine</p>
-
-                  <span className="feature-arrow">
-                    <i className="fas fa-arrow-right"></i>
-                  </span>
                 </div>
-              </div>
 
-              <div className="col-6 col-md-3">
-                <div className="feature-card report-card" onClick={() => setScreen("reports")}>
-                  <div className="feature-icon">
-                    <i className="fas fa-chart-line"></i>
+
+                {/* REPORTS */}
+                <div className="col-6 col-md-4">
+                  <div
+                    className="feature-card report-card"
+                    onClick={() => setScreen("reports")}
+                  >
+                    <div className="feature-icon">
+                      <i className="fas fa-chart-line"></i>
+                    </div>
+
+                    <h4>Reports</h4>
+                    <p>View analytics & progress</p>
+
+                    <span className="feature-arrow">
+                      <i className="fas fa-arrow-right"></i>
+                    </span>
                   </div>
-
-                  <h4>Reports</h4>
-                  <p>View analytics & progress</p>
-
-                  <span className="feature-arrow">
-                    <i className="fas fa-arrow-right"></i>
-                  </span>
                 </div>
-              </div>
 
-            </div>
+
+                {/* HABIT ANALYTICS */}
+                <div className="col-6 col-md-4">
+                  <div
+                    className="feature-card analytics-card"
+                    onClick={() => setScreen("analytics")}
+                  >
+                    <div className="feature-icon">
+                      <i className="fas fa-chart-column"></i>
+                    </div>
+
+                    <h4>Habit Analytics</h4>
+                    <p>Track individual habit progress</p>
+
+                    <span className="feature-arrow">
+                      <i className="fas fa-arrow-right"></i>
+                    </span>
+                  </div>
+                </div>
+
+              </div>
 
         </div>
     );
