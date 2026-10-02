@@ -482,6 +482,9 @@ h1,h2,h3,h4,h5{
   background:linear-gradient(135deg,#F59E0B,#EA580C);
 }
 
+.analytics-card{
+  background:linear-gradient(135deg,#0EA5E9,#2563EB);
+}
 
 /* ===== Copy Schedule Modal ===== */
 
