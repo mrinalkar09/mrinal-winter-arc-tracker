@@ -307,7 +307,7 @@ function Home({ user, logout, showToast }) {
 
       <div className="row g-3 mb-5">
 
-        <div className="col-12 col-md-4">
+        <div className="col-6 col-md-4">
 
           <div className="dashboard-stat">
 
@@ -332,7 +332,7 @@ function Home({ user, logout, showToast }) {
         </div>
 
 
-        <div className="col-12 col-md-4">
+        <div className="col-6 col-md-4">
 
           <div className="dashboard-stat">
 
