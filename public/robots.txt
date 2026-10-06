@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mrinal-winter-arc-tracker.vercel.app/sitemap.xml
